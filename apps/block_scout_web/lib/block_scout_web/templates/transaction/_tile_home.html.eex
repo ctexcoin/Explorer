@@ -1,0 +1,43 @@
+<div class="tile tile-type-<%= type_suffix(@transaction) %> fade-in <%= status_class(@transaction) %> tile-body-custom-home" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
+  <div class="row-body-transaction tile-body " data-selector="token-transfers-toggle" data-test="chain_transaction">
+    <!-- Color Block -->
+    <div class="tile-transaction-block col-md-1 flex-row flex-md-column mobile-hide">
+      <span class="tile-block-label">
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.75" y="0.75" width="16.5" height="20.5" rx="1.25" stroke="#97999F" stroke-width="1.5"/>
+          <rect x="4" y="4" width="10" height="2" fill="#97999F"/>
+          <rect x="4" y="8" width="10" height="2" fill="#97999F"/>
+          <rect x="4" y="12" width="10" height="2" fill="#97999F"/>
+          <rect x="4" y="16" width="5" height="2" fill="#97999F"/>
+        </svg>
+      </span>
+    </div>
+    <!-- Content -->
+    <div class="col-md-4 d-flex flex-column pr-2 pr-sm-2 pr-md-0">
+      <span>
+      <div class="text-truncate d-flex">
+        <span class="mobile-show">Tx# </span>
+        <%= render "_link.html", transaction_hash: @transaction.hash, data_test: "address_hash_link" %>
+      </div>
+      </span>
+      <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span>
+    </div>
+    <!-- Block info -->
+    <div class="col-md-5 d-flex flex-row flex-md-column flex-nowrap justify-content-center text-md-right mt-3 mt-md-0 tile-bottom">
+      <div class="text-truncate text-blue-gray">
+        <%= gettext "From" %>
+        <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </div>
+      <div class="text-truncate text-blue-gray">
+        <%= gettext "To" %>
+        <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      </div>
+    </div>
+    <!-- Amount -->
+    <div class="col-md-2 d-flex flex-column pr-md-0 box-rewards-value">
+      <span class="tile-title text-box-right">
+        <%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %>
+      </span>
+    </div>
+  </div>
+</div>

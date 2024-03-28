@@ -1,0 +1,46 @@
+<section class="container transaction-container" data-page="<%= String.downcase(@block_type) %>-list">
+  <div class="page-header">
+    <h3 class="text-page-header">Blocks</h3>
+    <hr>
+    <!-- <div class="header-content"><span class="bold-500">Featured:</span> Build Precise & Reliable Apps with BusinessShop APIs. <a href="#" class="text-link bold-500">Learn More!</a></div> -->
+  </div>
+  <%= render BlockScoutWeb.Advertisement.TextAdView, "index.html", conn: @conn %>
+  <div class="card">
+    <div class="card-body" data-async-listing="<%= @current_path %>">
+      <%= render BlockScoutWeb.CommonComponentsView, "_channel_disconnected_message.html", text: gettext("Connection Lost, click to load newer blocks") %>
+
+      <!-- <h1 class="card-title list-title-description"><%= gettext("%{block_type}s", block_type: @block_type) %></h1> -->
+
+      <div class="list-top-pagination-container-wrapper">
+        <%= render BlockScoutWeb.CommonComponentsView, "_pagination_container.html", position: "top", additional_classes: ["pagination-block"], cur_page_number: "1", show_pagination_limit: true, data_next_page_button: true, data_prev_page_button: true %>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-transaction">
+          <thead>
+            <tr>
+              <td>Block</td>
+              <td>Age</td>
+              <!-- <td>Txn</td> -->
+              <td>Fee Recipient</td>
+              <td>Gas Used</td>
+              <td>Gas Limit</td>
+              <td>Base Fee</td>
+              <td>Reward</td>
+              <td>Burnt Fees (CTEX)</td>
+            </tr>
+          </thead>
+          <tbody data-items>
+            <%= render BlockScoutWeb.CommonComponentsView, "_tile-loader.html" %>
+          </tbody>
+        </table>
+      </div>
+      <div data-empty-response-message style="display: none;">
+          <span><%= gettext "There are no blocks." %></span>
+      </div>
+
+      <%= render BlockScoutWeb.CommonComponentsView, "_pagination_container.html", position: "bottom", additional_classes: ["pagination-block"], cur_page_number: "1", show_pagination_limit: true, data_next_page_button: true, data_prev_page_button: true %>
+
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/blocks.js") %>"></script>
+</section>

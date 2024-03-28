@@ -1,0 +1,12 @@
+<%= if @current_user do %>
+    <li class="nav-item dropdown">
+    <a class="nav-link topnav-nav-link dropdown-toggle" href="#" id="navbarBlocksDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="nav-link-icon">
+        </span>
+        Admin
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarBlocksDropdown">
+        <a href="<%= RoutesAdmin.session_path(@conn, :logout) %>" class= "sign-out-button dropdown-item"><%= gettext "Sign out" %></a>
+    </div>
+    </li>
+<% end %>

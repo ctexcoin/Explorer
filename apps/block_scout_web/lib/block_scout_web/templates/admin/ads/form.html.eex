@@ -1,0 +1,82 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small opacity-75" href="<%= dashboard_path(@conn, :index) %>" style="color: #198CDF"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Add Ads</h1>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="btn btn-light" href="<%= session_path(@conn, :logout) %>">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="#181A1F"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="container box-top container-custom-abi">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Admin.CommonView, "_nav.html", conn: @conn, active_item: :ads %>
+    <div class="col-md-9 col-p-10">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="card-title"><%=if @method == :update, do: gettext("Edit Ads list"), else: gettext "Add ads to the Ads list" %></h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body card-body-form">
+          <div class="card-body-account">
+            <% path = if @method == :update, do: ads_path(@conn, @method, @ads.data.id), else: ads_path(@conn, @method) %>
+            <%= form_for @ads, path, fn f -> %>
+              <div class="form-group">
+                <%= label f, :title, gettext("Title"), class: "control-label", style: "font-size: 14px" %>
+                <%= text_input f, :title, class: "form-control", placeholder: "Title" %>
+                <%= error_tag f, :title, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group">
+                <%= label f, :link, gettext("Image link"), class: "control-label", style: "font-size: 14px" %>
+                <%= text_input f, :link, class: "form-control", placeholder: gettext("Image link") %>
+                <%= error_tag f, :link, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group">
+                <%= label f, :url_ads, gettext("Url ads"), class: "control-label", style: "font-size: 14px" %>
+                <%= text_input f, :url_ads, class: "form-control", placeholder: gettext("Url ads") %>
+                <%= error_tag f, :url_ads, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group">
+                <%= label f, :content_ads, gettext("Content ads"), class: "control-label", style: "font-size: 14px" %>
+                <%= textarea f, :content_ads, class: "form-control editor-ckeditor", placeholder: gettext("Content ads"), row: 5 %>
+                <%= error_tag f, :content_ads, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group">
+                <%= label f, :type, gettext("Type"), class: "", style: "font-size: 14px" %>
+                <%= select f, :type, ["Home": "home", "Address": "address", "Transaction": "tx", "All": "all"], class: "form-control" %>
+                <%= error_tag f, :type, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group">
+                <%= label f, :status, gettext("Status"), class: "control-label", style: "font-size: 14px" %>
+                <%= select f, :status, ["Enabled": 1, "Disable": 0], class: "form-control" %>
+                <%= error_tag f, :status, class: "text-danger form-error" %>
+              </div>
+
+              <div class="form-group float-right form-input">
+                <a class="btn btn-line" href="<%= ads_path(@conn, :index) %>"><%= gettext "Back to Ads (Cancel)"%></a>
+                <%= submit gettext("Save"), class: "save-address-tag-button button button-primary button-sm ml-3" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/editor.js") %>"></script>
+</section>

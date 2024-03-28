@@ -1,0 +1,61 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small opacity-75" href="/" style="color: #198CDF"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Account Overview</h1>
+      </div>
+      <div class="d-flex gap-3"><a class="btn btn-light" href="<%= BlockScoutWeb.LayoutView.sign_out_link %>"><i class="fa fa-sign-out me-1"></i> Sign Out</a></div>
+    </div>
+  </div>
+</div>
+<section class="container box-top">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Account.CommonView, "_nav.html", conn: @conn, active_item: :profile, user: @user %>
+    <div class="col-md col-p-10">
+      <div class="card">
+        <h1 class="card-title list-title-description header-account">Personal Info</h1>
+        <div class="card-body" >
+          <p>Below are the username, email and overview information for your account.</p>
+          <!-- <div class="col-sm">
+            <img src="<%= @user.avatar %>" alt="<%= @user.nickname %>" size="42" height="42" width="42" >
+          </div> -->
+          <div class="col-sm">
+            <div class="mb-4 ">
+              <label for="static-name" class="col-sm-3 col-form-label label-account">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 2.4C9.328 2.4 10.4 3.472 10.4 4.8C10.4 6.128 9.328 7.2 8 7.2C6.672 7.2 5.6 6.128 5.6 4.8C5.6 3.472 6.672 2.4 8 2.4ZM8 13.76C6 13.76 4.232 12.736 3.2 11.184C3.224 9.592 6.4 8.72 8 8.72C9.592 8.72 12.776 9.592 12.8 11.184C11.768 12.736 10 13.76 8 13.76Z" fill="#4C4E64" fill-opacity="0.54"/>
+                </svg>
+                Your username:
+              </label>
+              <div class="col-sm">
+                <input type="text" readonly class="form-control-plaintext profile-item label" id="static-name" value="<%= @user.name %>">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label for="static-nickname" class="col-sm-3 col-form-label label-account">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 2.4C9.328 2.4 10.4 3.472 10.4 4.8C10.4 6.128 9.328 7.2 8 7.2C6.672 7.2 5.6 6.128 5.6 4.8C5.6 3.472 6.672 2.4 8 2.4ZM8 13.76C6 13.76 4.232 12.736 3.2 11.184C3.224 9.592 6.4 8.72 8 8.72C9.592 8.72 12.776 9.592 12.8 11.184C11.768 12.736 10 13.76 8 13.76Z" fill="#4C4E64" fill-opacity="0.54"/>
+                </svg>
+                Your Username
+              </label>
+              <div class="col-sm">
+                <input type="text" readonly class="form-control-plaintext profile-item" id="static-nickname" value="<%= @user.nickname %>">
+              </div>
+            </div>
+            <div class="mb-4">
+              <label for="static-email" class="col-sm-3 col-form-label label-account">
+                <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.4 0H1.6C0.72 0 0.00799999 0.72 0.00799999 1.6L0 11.2C0 12.08 0.72 12.8 1.6 12.8H14.4C15.28 12.8 16 12.08 16 11.2V1.6C16 0.72 15.28 0 14.4 0ZM14.4 3.2L8 7.2L1.6 3.2V1.6L8 5.6L14.4 1.6V3.2Z" fill="#4C4E64" fill-opacity="0.54"/>
+                </svg>
+                Your Email Address:
+              </label>
+              <div class="col-sm">
+                <input type="text" readonly class="form-control-plaintext profile-item" id="static-email" value="<%= @user.email %>">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

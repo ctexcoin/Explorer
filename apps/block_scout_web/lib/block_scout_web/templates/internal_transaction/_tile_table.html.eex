@@ -1,0 +1,51 @@
+<% error = @internal_transaction.error %>
+<tr class="fade-in <%= if error, do: "tile-status--error--reason"%>" data-test="internal_transaction" data-key="<%= @internal_transaction.transaction_hash %>_<%= @internal_transaction.index %>" data-internal-transaction-transaction-hash="<%= @internal_transaction.transaction_hash %>" data-internal-transaction-index="<%= @internal_transaction.index %>">
+  <td class="text-blue">
+    <div class="ellipsis">
+      <%= render BlockScoutWeb.TransactionView, "_link.html", transaction_hash: @internal_transaction.transaction_hash %>
+    </div>
+  </td>
+  <td>
+    <%= link(
+          to_string(@internal_transaction.block_number),
+          to: block_path(BlockScoutWeb.Endpoint, :show, @internal_transaction.block_number)
+        ) %>
+  </td>
+  <td>
+    <span class="mr-2 mr-md-0 order-2" in-tile data-from-now="<%= @internal_transaction.transaction.block.timestamp %>"></span>
+  </td>
+  <td class="text-blue">
+    <div class="ellipsis">
+      <%= @internal_transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> (&(if is_list(&1), do: Keyword.put(&1, :ignore_implementation_name, true), else: &1)).() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      <button type="button" class="btn-copy" data-toggle="tooltip" data-placement="top" data-original-title="Copy address">
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.25 3.31066V9.25H5.75V0.75H10.6893L13.25 3.31066Z" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M4 4H1V14H10V11" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M10 4V0L14 4H10Z" fill="#CECECE"/>
+        </svg>
+      </button>
+    </div>
+  </td>
+  <td>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="11.5" fill="none" stroke="#1BBC82"/>
+      <path d="M7 12L16 12" stroke="#1BBC82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 8L17 12L13 16" stroke="#1BBC82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </td>
+  <td  class="text-blue">
+    <div class="ellipsis">
+      <%= @internal_transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> (&(if is_list(&1), do: Keyword.put(&1, :ignore_implementation_name, true), else: &1)).() |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      <button type="button" class="btn-copy" data-toggle="tooltip" data-placement="top" data-original-title="Copy address">
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.25 3.31066V9.25H5.75V0.75H10.6893L13.25 3.31066Z" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M4 4H1V14H10V11" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M10 4V0L14 4H10Z" fill="#CECECE"/>
+        </svg>
+      </button>
+    </div>
+  </td>
+  <td>
+      <%= BlockScoutWeb.TransactionView.value(@internal_transaction, include_label: false) %> <%= Explorer.coin_name() %>
+  </td>
+</tr>

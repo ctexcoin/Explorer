@@ -1,0 +1,83 @@
+<div class="col-md-3 mb-4 col-p-10">
+  <div class="navbar-account">
+    <div class="content-info">
+      <div class="c-username"><%= @user.nickname %></div>
+      <div class="c-email"><%= @user.email %></div>
+    </div>
+    <ul class="nav account flex-column nav-pills">
+      <li class="nav-item nav-item-title text-uppercase">Account</li>
+      <li class="nav-item account">
+        <a class="profile-button <%= nav_class(@active_item, :profile) %>" aria-current="page" href="<%= auth_path(@conn, :profile) %>">
+          <span class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 2.4C9.328 2.4 10.4 3.472 10.4 4.8C10.4 6.128 9.328 7.2 8 7.2C6.672 7.2 5.6 6.128 5.6 4.8C5.6 3.472 6.672 2.4 8 2.4ZM8 13.76C6 13.76 4.232 12.736 3.2 11.184C3.224 9.592 6.4 8.72 8 8.72C9.592 8.72 12.776 9.592 12.8 11.184C11.768 12.736 10 13.76 8 13.76Z" fill="#9E9FAB"/>
+            </svg>
+          </span>
+          <%= gettext "Account Overview" %>
+          </a>
+      </li>
+      <li class="nav-item nav-item-title text-uppercase">Watch List &amp; Notes</li>
+      <li class="nav-item account">
+        <a class="watchlist-button <%= nav_class(@active_item, :watchlist) %>" href="<%= watchlist_path(@conn, :show) %>">
+          <span class="icon">
+            <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 14.68L6.84 13.624C2.72 9.888 0 7.424 0 4.4C0 1.936 1.936 0 4.4 0C5.792 0 7.128 0.648 8 1.672C8.872 0.648 10.208 0 11.6 0C14.064 0 16 1.936 16 4.4C16 7.424 13.28 9.888 9.16 13.632L8 14.68Z" fill="#9E9FAB"/>
+            </svg>
+          </span>
+          <%= gettext "Watch list" %>
+        </a>
+      </li>
+      <li class="nav-item account">
+        <a class="address-tags-button <%= nav_class(@active_item, :address_tags) %>" href="<%= tag_address_path(@conn, :index) %>">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.528 7.664L8.328 0.464C8.04 0.176 7.64 0 7.2 0H1.6C0.72 0 0 0.72 0 1.6V7.2C0 7.64 0.176 8.04 0.472 8.336L7.672 15.536C7.96 15.824 8.36 16 8.8 16C9.24 16 9.64 15.824 9.928 15.528L15.528 9.928C15.824 9.64 16 9.24 16 8.8C16 8.36 15.816 7.952 15.528 7.664ZM2.8 4C2.136 4 1.6 3.464 1.6 2.8C1.6 2.136 2.136 1.6 2.8 1.6C3.464 1.6 4 2.136 4 2.8C4 3.464 3.464 4 2.8 4Z" fill="#9E9FAB"/>
+            </svg>
+          </span>
+          <%= gettext "Address Tags" %>
+        </a>
+      </li>
+      <li class="nav-item account">
+        <a class="transaction-tags-button <%= nav_class(@active_item, :transaction_tags) %>" href="<%= tag_transaction_path(@conn, :index) %>">
+          <span class="icon">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 12H16V9H0V12ZM1.5 9.75H3V11.25H1.5V9.75ZM0 0V3H16V0H0ZM3 2.25H1.5V0.75H3V2.25ZM0 7.5H16V4.5H0V7.5ZM1.5 5.25H3V6.75H1.5V5.25Z" fill="#9E9FAB"/>
+            </svg>
+          </span>
+          <%= gettext "Transaction Tags" %>
+        </a>
+      </li>
+      <li class="nav-item nav-item-title text-uppercase">Others</li>
+      <li class="nav-item account">
+        <a class="api-keys-button <%= nav_class(@active_item, :api_keys) %>" href="<%= api_key_path(@conn, :index) %>">
+          <span class="icon">
+            <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 0H2C0.9 0 0 0.9 0 2V13C0 14.1 0.9 15 2 15H14C15.1 15 16 14.1 16 13V2C16 0.9 15.1 0 14 0ZM2 7H5V9H2V7ZM9 13H2V11H9V13ZM14 13H11V11H14V13ZM14 9H7V7H14V9Z" fill="#4C4E64" fill-opacity="0.54"/>
+            </svg>
+          </span>
+          <%= gettext "API keys" %>
+        </a>
+      </li>
+      <li class="nav-item account">
+        <a class="public-tags-button <%= nav_class(@active_item, :public_tags) %>" href="<%= public_tags_request_path(@conn, :index) %>">
+          <span class="icon">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 0L0 3.27273V8.18182C0 12.7227 3.41333 16.9691 8 18C12.5867 16.9691 16 12.7227 16 8.18182V3.27273L8 0ZM6.22222 13.0909L2.66667 9.81818L3.92 8.66455L6.22222 10.7755L12.08 5.38364L13.3333 6.54545L6.22222 13.0909Z" fill="#4C4E64" fill-opacity="0.54"/>
+            </svg>
+          </span>
+          <%= gettext "Public tags" %>
+        </a>
+      </li>
+      <li class="nav-item account">
+        <a class="custom-abi-button <%= nav_class(@active_item, :custom_abis) %>" href="<%= custom_abi_path(@conn, :index) %>">
+          <span class="icon" style="top: -3px;">
+            <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.59 4.59L13.18 3.5L15.59 2.41L16.68 0L17.77 2.41L20.18 3.5L17.77 4.59L16.68 7L15.59 4.59ZM19.46 10.72L18.68 9L17.9 10.72L16.18 11.5L17.9 12.28L18.68 14L19.46 12.28L21.18 11.5L19.46 10.72ZM14.42 12.37L16.36 13.84L13.86 18.17L11.62 17.23C11.42 17.36 11.2 17.49 10.98 17.6L10.68 20H5.68L5.38 17.59C5.16 17.48 4.95 17.36 4.74 17.22L2.5 18.16L0 13.83L1.94 12.36C1.93 12.25 1.93 12.12 1.93 12C1.93 11.88 1.93 11.75 1.94 11.63L0 10.16L2.5 5.83L4.74 6.77C4.94 6.64 5.16 6.51 5.38 6.4L5.68 4H10.68L10.98 6.41C11.2 6.52 11.41 6.64 11.62 6.78L13.86 5.84L16.36 10.17L14.42 11.64C14.43 11.76 14.43 11.88 14.43 12.01C14.43 12.14 14.43 12.25 14.42 12.37ZM11.18 12C11.18 10.34 9.84 9 8.18 9C6.52 9 5.18 10.34 5.18 12C5.18 13.66 6.52 15 8.18 15C9.84 15 11.18 13.66 11.18 12Z" fill="#4C4E64" fill-opacity="0.54"/>
+            </svg>
+          </span>
+          <%= gettext "Custom ABI" %>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

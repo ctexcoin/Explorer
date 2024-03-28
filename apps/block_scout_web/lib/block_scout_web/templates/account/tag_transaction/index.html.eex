@@ -1,0 +1,54 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small opacity-75" href="/" style="color: #198CDF"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Transaction Tags</h1>
+      </div>
+      <div class="d-flex gap-3"><a class="btn btn-light" href="<%= BlockScoutWeb.LayoutView.sign_out_link %>"><i class="fa fa-sign-out me-1"></i> Sign Out</a></div>
+    </div>
+  </div>
+</div>
+<section class="container box-top">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Account.CommonView, "_nav.html", conn: @conn, active_item: :transaction_tags, user: @user %>
+    <div class="col-md col-p-10">
+      <div class="card">
+        <div class="content-header">
+            <h1 class="card-title list-title-description header-account"><%= gettext "Transaction Tags" %></h1>
+            <%= if Enum.count(@tx_tags) < TagTransaction.get_max_tags_count() do %>
+              <a class="add-transaction-tag-button button button-primary button-sm" href="<%= tag_transaction_path(@conn, :new) %>">+ <%= gettext "Add" %></a>
+          <% end %>
+        </div>
+        <div class="card-body" >
+          <p>A private transaction note (up to 100 characters) can be saved and is useful for transaction tracking.</p>
+          <div class="">
+            <div class="mb-3 o-flow-x">
+              <%= if @tx_tags == [] do %>
+              <div style="min-width: 100%;">
+                <div class="tile tile-muted text-center" data-selector="empty-coin-balances-list">
+                  <%= gettext "You don't have transaction tags yet" %>
+                </div>
+              </div>
+                <h2></h2>
+              <% else %>
+                <table class="table mb-3">
+                  <thead style="font-size: 14px; color: #6c757d" >
+                    <tr>
+                      <th scope="col"><%= gettext "Name" %></th>
+                      <th scope="col"><%= gettext "Transaction" %></th>
+                      <th scope="col"><%= gettext "Action" %></th>
+                    </tr>
+                  </thead>
+                  <tbody style="font-size: 14px; color: #6c757d" >
+                    <%= Enum.map(@tx_tags, fn at ->
+                      render("row.html", tx_tag: at, conn: @conn)
+                      end) %>
+                  </tbody>
+                </table>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>

@@ -1,0 +1,83 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small opacity-75" href="/" style="color: #198CDF"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Contract Custom ABI</h1>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="btn btn-light" href="<%= BlockScoutWeb.LayoutView.sign_out_link %>">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="#181A1F"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="container box-top container-custom-abi">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Account.CommonView, "_nav.html", conn: @conn, active_item: :custom_abis, user: @user %>
+    <div class="col-md-9 col-p-10">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="card-title">Contract Custom ABI</h3>
+            </div>
+            <div class="col-auto">
+              <%= if Enum.count(@custom_abis) < CustomABI.get_max_custom_abis_count() do %>
+                <a class="btn btn-add" href="<%= custom_abi_path(@conn, :new) %>"><%= gettext "+ Add Custom ABI" %></a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="box-content">
+            <p class="font-15">You can add custom ABI for an unverified smart contract to interact with it once logged-in to your BusinessShop account</p>
+            <p class="font-15 color-gray"><%= Enum.count(@custom_abis) %> address verified (out of <%= CustomABI.get_max_custom_abis_count() %> max limit)</p>
+          </div>
+          <!-- <%= if Enum.count(@custom_abis) < CustomABI.get_max_custom_abis_count() do %>
+            <div style="min-width: 100%;">
+              <div class="tile tile-muted text-center" data-selector="empty-coin-balances-list">
+                <%= gettext "Create a Custom ABI to interact with contracts." %>
+              </div>
+            </div>
+          <% else %>
+            <div style="min-width: 100%;">
+              <div class="tile tile-muted text-center" data-selector="empty-coin-balances-list">
+                <%= gettext "You can create up to 15 Custom ABIs per account." %>
+              </div>
+            </div>
+          <% end %> -->
+          <div class="col-sm">
+            <div class="mb-3 row o-flow-x">
+              <table class="table mb-3 table-abi">
+                <thead>
+                  <tr>
+                    <th scope="col"><%= gettext "Name" %></th>
+                    <th scope="col"><%= gettext "Contract Address" %></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= if @custom_abis != [] do %>
+                    <%= Enum.map(@custom_abis, fn key -> render("row.html", custom_abi: key, conn: @conn) end) %>
+                  <% else %>
+                  <tr>
+                    <td colspan="4" class="no-data">You have not entered any custom ABIs</td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/delete-item-handler.js") %>"></script>
+</section>

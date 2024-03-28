@@ -1,0 +1,60 @@
+<tr class="fade-in" data-test="<%= type_suffix(@transaction) %>" data-identifier-hash="<%= @transaction.hash %>">
+  <td>
+    <span class="icon-eye">
+      <svg width="15" height="10" viewBox="0 0 15 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 0C4.09091 0 1.17955 2.07333 0 5C1.17955 7.92667 4.09091 10 7.5 10C10.9091 10 13.8205 7.92667 15 5C13.8205 2.07333 10.9091 0 7.5 0ZM7.5 8.33333C5.61818 8.33333 4.09091 6.84 4.09091 5C4.09091 3.16 5.61818 1.66667 7.5 1.66667C9.38182 1.66667 10.9091 3.16 10.9091 5C10.9091 6.84 9.38182 8.33333 7.5 8.33333ZM7.5 3C6.36818 3 5.45455 3.89333 5.45455 5C5.45455 6.10667 6.36818 7 7.5 7C8.63182 7 9.54545 6.10667 9.54545 5C9.54545 3.89333 8.63182 3 7.5 3Z" fill="#4C4E64" fill-opacity="0.54"/>
+      </svg>
+    </span>
+  </td>
+  <!-- Txn Hash -->
+  <td class="text-blue">
+    <div class="ellipsis">
+      <%= render "_link.html", transaction_hash: @transaction.hash, data_test: "address_hash_link" %>
+    </div>
+  </td>
+  <!-- Method -->
+  <td>
+    <% method_name = Transaction.get_method_name(@transaction) %>
+    <%= if method_name do %>
+      <span class="method"><%= method_name %></span>
+    <% end %>
+  </td>
+  <!-- Block -->
+  <td class="text-blue"><%= @transaction |> block_number() |> BlockScoutWeb.RenderHelpers.render_partial() %></td>
+  <!-- Age -->
+  <td><span in-tile data-from-now="<%= block_timestamp(@transaction) %>"></span></td>
+  <!-- From -->
+  <td class="text-blue">
+    <div class="ellipsis ">
+      <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:from, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      <button type="button" class="btn-copy" data-toggle="tooltip" data-placement="top" data-original-title="Copy address">
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.25 3.31066V9.25H5.75V0.75H10.6893L13.25 3.31066Z" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M4 4H1V14H10V11" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M10 4V0L14 4H10Z" fill="#CECECE"/>
+        </svg>
+      </button>
+    </div>
+  </td>
+  <td>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="11.5" fill="none" stroke="#1BBC82"/>
+      <path d="M7 12L16 12" stroke="#1BBC82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M13 8L17 12L13 16" stroke="#1BBC82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </td>
+  <td class="text-blue">
+    <div class="ellipsis">
+      <%= @transaction |> BlockScoutWeb.AddressView.address_partial_selector(:to, assigns[:current_address]) |> BlockScoutWeb.RenderHelpers.render_partial() %>
+      <button type="button" class="btn-copy" data-toggle="tooltip" data-placement="top" data-original-title="Copy address">
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.25 3.31066V9.25H5.75V0.75H10.6893L13.25 3.31066Z" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M4 4H1V14H10V11" stroke="#CECECE" stroke-width="1.5"/>
+          <path d="M10 4V0L14 4H10Z" fill="#CECECE"/>
+        </svg>
+      </button>
+    </div>
+  </td>
+  <td><%= value(@transaction, include_label: false) %> <%= Explorer.coin_name() %></td>
+  <td><%= formatted_fee(@transaction, denomination: :ether, include_label: false) %></td>
+</tr>

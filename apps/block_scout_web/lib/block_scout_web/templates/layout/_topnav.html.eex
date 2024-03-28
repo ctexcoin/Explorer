@@ -1,0 +1,117 @@
+<%# apps_menu = Application.get_env(:block_scout_web, :apps_menu) %>
+<% other_nets = dropdown_other_nets() %>
+<% test_nets = test_nets(dropdown_nets()) %>
+<% main_nets = dropdown_head_main_nets() %>
+<% list_menu = get_list_menu("header") %>
+<% eth_value = get_eth_value() %>
+<% percentchange24h = getpercent_change_24h() %>
+<div class="navbar-top">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col d-none d-lg-block d-xl-block">
+        <p class="mb-0 text-price"><%= Explorer.coin_name() %> Price: <span class="price" data-usd-unit-price="<%=eth_value %>">$<%=eth_value%></span> <span class="rate" style="color: <%=if Decimal.compare(Decimal.from_float(percentchange24h), 0) == :lt, do: 'red', else: '#309d0a'%>"  data-price-percent-change=<%=percentchange24h%>>(<%=percentchange24h%>%)</span></p>
+      </div>
+      <div class="col-lg-7 d-flex">
+        <%= render BlockScoutWeb.LayoutView, "_search.html", conn: @conn, id: "main-search-autocomplete", additional_classes: [""] %>
+        <button class="dark-mode-changer-top" id="dark-mode-changer">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.76 4.29L3.96 2.5L2.55 3.91L4.34 5.7L5.76 4.29ZM3 9.95H0V11.95H3V9.95ZM12 0H10V2.95H12V0ZM19.45 3.91L18.04 2.5L16.25 4.29L17.66 5.7L19.45 3.91ZM16.24 17.61L18.03 19.41L19.44 18L17.64 16.21L16.24 17.61ZM19 9.95V11.95H22V9.95H19ZM11 4.95C7.69 4.95 5 7.64 5 10.95C5 14.26 7.69 16.95 11 16.95C14.31 16.95 17 14.26 17 10.95C17 7.64 14.31 4.95 11 4.95ZM10 21.9H12V18.95H10V21.9ZM2.55 17.99L3.96 19.4L5.75 17.6L4.34 16.19L2.55 17.99Z" fill="#1C1D20"/>
+          </svg>
+        </button>
+        <div class="logo">
+          <img alt="" src="/images/favicon-32x32.png">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-dark navbar-expand-lg navbar-primary" data-selector="navbar" id="top-navbar">
+  <div class="container navbar-container">
+    <%= link to: webapp_url(@conn), class: "navbar-brand", "data-test": "header_logo" do %>
+      <%= if logo() do %>
+        <img class="navbar-logo" id="navbar-logo" src="<%= static_path(@conn, logo()) %>" alt="<%= subnetwork_title() %>" />
+      <% end %>
+      <%= if logo_text() do %>
+        <span class="logo-text <%= unless logo(), do: "no-logo" %>"> <%= logo_text() %> </span>
+      <% end %>
+      <%= if Application.get_env(:block_scout_web, BlockScoutWeb.Chain)[:enable_testnet_label] do %>
+        <%= render BlockScoutWeb.FormView, "_tag.html", text: Application.get_env(:block_scout_web, BlockScoutWeb.Chain)[:testnet_label_text], additional_classes: ["testnet-label", "ml-2"] %>
+      <% end %>
+    <% end %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<%= gettext("Toggle navigation") %>">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <%= if list_menu != [] and list_menu != nil do %>
+          <%= Enum.map(list_menu, fn menu -> %>
+            <%= if menu.list_child != nil do %>
+            <li class="nav-item dropdown">
+              <a class="nav-link topnav-nav-link dropdown-toggle" href="#" id="navbarBlocksDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= menu.title %>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarBlockchainDropdown">
+                <%= Enum.map(menu.list_child, fn x -> %>
+                  <%= if x.list_child != nil do %>
+                    <div class="nav-submenu">
+                      <span>
+                        <%= x.title %>
+                      </span>
+                    </div>
+                    <%= Enum.map(x.list_child, fn y -> %>
+                      <a class="dropdown-item <%= if y.link =~ @conn.request_path and @conn.request_path != "/" do "active" end %>" href="<%= y.link %>"><%= y.title %></a>
+                    <% end) %>
+                  <% else %>
+                    <a class="dropdown-item <%= if x.link =~ @conn.request_path and @conn.request_path != "/" do "active" end %>" href="<%= x.link %>"><%= x.title %></a>
+                  <% end %>
+                <% end) %>
+              </div>
+            </li>
+            <% else %>
+            <a class="nav-link topnav-nav-link" href="<%= menu.link %>">
+              <%= menu.title %>
+            </a>
+            <% end %>
+          <% end) %>
+        <% end %>
+        <li class="nav-item dropdown">
+          <a class="nav-link topnav-nav-link active-icon <%= if dropdown_nets() != [], do: "dropdown-toggle" %>" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="nav-link-icon">
+              <%= render BlockScoutWeb.IconsView, "_active_icon.html" %>
+            </span>
+            <%# <%= subnetwork_title() %>
+            <%= gettext("CTEX Mainnet") %>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <%= if Enum.count(main_nets) > 0 do %>
+              <a class="dropdown-item header division">Mainnets</a>
+              <%= for %{url: url, title: title} <- main_nets do %>
+                <a class="dropdown-item" href="<%= url %>"><%= title %></a>
+              <% end %>
+            <% end %>
+            <%= if Enum.count(test_nets) > 0 do %>
+              <a class="dropdown-item header division">Testnets</a>
+              <%= for %{url: url, title: title} <- test_nets do %>
+                <a class="dropdown-item" href="<%= url %>"><%= title %></a>
+              <% end %>
+            <% end %>
+            <%= if Enum.count(other_nets) > 0 do %>
+              <a class="dropdown-item header division">Other Networks</a>
+              <%= for %{url: url, title: title} <- other_nets do %>
+                <a class="dropdown-item" href="<%= url %>"><%= title %></a>
+              <% end %>
+            <% end %>
+          </div>
+        </li>
+        <!-- Dark mode changer -->
+        <!-- <button class="dark-mode-changer" id="dark-mode-changer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16">
+            <path fill="#9B62FF" fill-rule="evenodd" d="M14.88 11.578a.544.544 0 0 0-.599-.166 5.7 5.7 0 0 1-1.924.321c-3.259 0-5.91-2.632-5.91-5.866 0-1.947.968-3.759 2.59-4.849a.534.534 0 0 0-.225-.97A5.289 5.289 0 0 0 8.059 0C3.615 0 0 3.588 0 8s3.615 8 8.059 8c2.82 0 5.386-1.423 6.862-3.806a.533.533 0 0 0-.041-.616z"/>
+          </svg>
+        </button> -->
+        <li class="nav-drive"></li>
+        <%= render BlockScoutWeb.LayoutView, "_account_menu_item.html", conn: @conn, current_user: @current_user %>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,90 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small back-home" href="<%= dashboard_path(@conn, :index) %>"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Tokens Manager</h1>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="btn btn-light" href="<%= session_path(@conn, :logout) %>">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="#181A1F"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="container box-top container-custom-abi transaction-container" data-page="tokens"
+	data-chain-id="<%= Application.get_env(:block_scout_web, :chain_id) %>"
+	data-display-token-icons="<%= System.get_env("DISPLAY_TOKEN_ICONS") %>" >
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Admin.CommonView, "_nav.html", conn: @conn, active_item: :tokens_manager %>
+    <div class="col-md-9 col-p-10">
+      <div class="card">
+         <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="card-title">Tokens Manager</h3>
+            </div>
+            <div class="col-auto">
+              <div class="list-top-pagination-container-wrapper tokens-list-search-input-outer-container d-flex" style="float: right;">
+                <label class="tokens-list-search-input-container tokens ">
+                  <input data-search-field="" class="form-control tokens-list-search-input search-input" type="text" name="filter" placeholder="Token name or symbol" id="search-text-input" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body" style="padding-top: 10px" data-async-load data-async-listing="<%= @current_path %>" data-no-self-calls>
+          <%= render BlockScoutWeb.CommonComponentsView, "_pagination_container.html", position: "top", cur_page_number: "1", show_pagination_limit: true, data_next_page_button: true, data_prev_page_button: true %>
+          <div class="addresses-table-container">
+            <div class="stakes-table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">&nbsp;</div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div>&nbsp;</div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">Token</div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">Tick</div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">Address</div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">
+                      Total Supply
+                      </div>
+                    </th>
+                    <th class="stakes-table-th">
+                      <div class="stakes-table-th-content">
+                      Holders Count
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody data-items data-selector="top-tokens-list">
+                  <%= render BlockScoutWeb.CommonComponentsView, "_table-loader.html", columns_num: 7 %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <%= render BlockScoutWeb.CommonComponentsView, "_pagination_container.html", position: "bottom", cur_page_number: "1", show_pagination_limit: true, data_next_page_button: true, data_prev_page_button: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/admin-custom.js") %>"></script>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/admin-tokens-manager.js") %>"></script>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/tokens.js") %>"></script>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/token-transfers-toggle.js") %>"></script>
+</section>

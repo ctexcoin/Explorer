@@ -1,0 +1,14 @@
+<tr>
+  <td><%= @menu.title %></td>
+  <td><a href="<%= @menu.link %>" target="_blank"><%= @menu.link %></a></td>
+  <td><%= if @menu.parent_name != nil do @menu.parent_name else @menu.parent end %></td>
+  <%= if (@menu.status == 1) do %>
+  <td>Enabled</td>
+  <% else %>
+  <td>Disabled</td>
+  <% end %>
+  <td><%= @menu.order %></td>
+  <td>
+    <%= link (render BlockScoutWeb.CommonComponentsView, "_svg_pen.html"), to: menu_header_path(@conn, :edit, @menu.id) %>
+  </td>
+</tr>

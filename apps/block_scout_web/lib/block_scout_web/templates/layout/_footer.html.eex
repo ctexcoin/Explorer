@@ -1,0 +1,92 @@
+<% list_menu = get_list_menu("footer") %>
+<footer class="footer">
+  <div class="footer-body container">
+    <div class="footer-social-container">
+      <div class="footer-social-link mr-auto">
+        <a href="#" rel="noreferrer" target="_blank" class="footer-social-icon" title='<%= gettext("Twitter") %>'>
+          <div class="footer-social-icon-container"><img src="/images/twitter.png"></div>
+        </a>
+        <a href="#" rel="noreferrer" target="_blank" class="footer-social-icon" title='<%= gettext("Telegram") %>'>
+          <div class="footer-social-icon-container"><img src="/images/telegram.png"></div>
+        </a>
+        <a href="#" rel="noreferrer" target="_blank" class="footer-social-icon" title='<%= gettext("Facebook") %>'>
+          <div class="footer-social-icon-container"><img src="/images/facebook.png"></div>
+        </a>
+      </div>
+      <a href="#" class="btn-back-to-top" id="btn_back_to_top">
+        <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 9L6 4L11 9" stroke="#20232C"/>
+          <path d="M6 15V4.5" stroke="#20232C"/>
+          <path d="M0 1H12" stroke="#20232C"/>
+        </svg>
+        <%= gettext("Back to Top") %>
+      </a>
+    </div>
+    <!-- Logo -->
+    <div class="row footer-logo-row">
+      <div class="col-lg-4">
+        <%= link to: webapp_url(@conn), class: "footer-brand" do %>
+          <%= if logo_footer() do %>
+            <img class="footer-logo" src="<%= static_path(@conn, logo_footer()) %>" alt="<%= subnetwork_title() %>" />
+          <% end %>
+          <%= if logo_text() do %>
+            <span class="logo-text in-footer <%= unless logo_footer(), do: "no-logo" %>"> <%= logo_text() %> </span>
+          <% end %>
+        <% end %>
+        <h3 class="footer-info-text font-20"><%= gettext("Powered by CTEX SmartChain") %></h3>
+        <p class="footer-info-text"><%= gettext("CTEX SmartChain is a Block Explorer and Analytics Platform for CTEX, a decentralized smart contracts platform.") %></p>
+      </div>
+      <div class="col-lg-8">
+        <div class="row">
+          <%= if list_menu != [] and list_menu != nil do %>
+            <% last_child = Enum.take(list_menu, -1) %>
+            <%= Enum.map(list_menu, fn menu -> %>
+              <%= if menu.list_child != nil do %>
+                <div class="col-md-4">
+                  <h4 class="footer-list-title"><%= menu.title %></h4>
+                  <ul class="footer-list-link">
+                    <%= Enum.map(menu.list_child, fn x -> %>
+                      <li><a href="<%= x.link %>" target="_blank"><%= x.title %></a></li>
+                    <% end) %>
+                    <%= Enum.map(last_child, fn x -> %>
+                      <%= if x.id == menu.id do %>
+                        <%= render BlockScoutWeb.LayoutView, "_add_chain_to_mm.html" %>
+                      <% end %>
+                    <% end) %>
+                  </ul>
+                </div>
+              <% else %>
+                <div class="col-md-4">
+                  <h4 class="footer-list-title">
+                    <%= if menu.link != nil do %>
+                      <a href="<%= menu.link %>"><%= menu.title %></a>
+                    <% else %>
+                      <%= menu.title %>
+                    <% end %>
+                  </h4>
+                  <%= Enum.map(last_child, fn x -> %>
+                    <%= if x.id == menu.id do %>
+                      <ul class="footer-list-link">
+                        <%= render BlockScoutWeb.LayoutView, "_add_chain_to_mm.html" %>
+                      </ul>
+                    <% end %>
+                  <% end) %>
+                </div>
+              <% end %>
+            <% end) %>
+          <% else %>
+          <div class="col-md-4">
+            <h4 class="footer-list-title"><%= gettext("Products & Services") %></h4>
+            <ul class="footer-list-link">
+              <%= render BlockScoutWeb.LayoutView, "_add_chain_to_mm.html" %>
+            </ul>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="copyright-container">
+      <div class="text-copyright"><%= gettext("Ctex Chain © 2024") %></div>
+    </div>
+  </div>
+</footer>

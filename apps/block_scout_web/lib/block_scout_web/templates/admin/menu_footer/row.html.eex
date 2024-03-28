@@ -1,0 +1,21 @@
+<tr>
+  <td><%= @menu.title %></td>
+  <td><a href="<%= @menu.link %>" target="_blank"><%= @menu.link %></a></td>
+  <td><%= if @menu.parent_name != nil do @menu.parent_name else @menu.parent end %></td>
+  <%= if (@menu.status == 1) do %>
+  <td>Enabled</td>
+  <% else %>
+  <td>Disabled</td>
+  <% end %>
+  <td><%= @menu.order %></td>
+  <td>
+    <%= link (render BlockScoutWeb.CommonComponentsView, "_svg_pen.html"), to: menu_footer_path(@conn, :edit, @menu.id) %>
+  </td>
+  <td>
+    <form method="post" action="<%= menu_footer_path(@conn, :delete, @menu.id) %>">
+      <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token() %>">
+      <input type="hidden" name="_method" value="delete">
+    </form>
+    <a href="" data-delete-ads><%= (render BlockScoutWeb.CommonComponentsView, "_svg_trash.html") %></a>
+  </td>
+</tr>

@@ -1,0 +1,82 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small opacity-75" href="/" style="color: #198CDF"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">API keys</h1>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="btn btn-light" href="<%= BlockScoutWeb.LayoutView.sign_out_link %>">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="#181A1F"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="container box-top container-custom-abi">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Account.CommonView, "_nav.html", conn: @conn, active_item: :api_keys, user: @user %>
+    <div class="col-md-9 col-p-10">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="card-title"><%= gettext "API keys" %></h3>
+            </div>
+            <div class="col-auto">
+              <%= if Enum.count(@api_keys) < Key.get_max_api_keys_count() do %>
+                <a class="btn btn-add" href="<%= api_key_path(@conn, :new) %>"><%= gettext "+ Add API key" %></a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="box-content">
+            <p class="font-15">For developers interested in building applications using our API Service, please create an API-Key Token which you can then use with all your API requests.</p>
+            <p class="font-15 color-gray"><%= Enum.count(@api_keys) %> key added (out of <%= Key.get_max_api_keys_count() %> max limit)</p>
+          </div>
+          <!-- <%= if Enum.count(@api_keys) < Key.get_max_api_keys_count() do %>
+            <div style="min-width: 100%;">
+              <div class="tile tile-muted text-center" data-selector="empty-coin-balances-list">
+                <%= gettext "Create an API key to use with your RPC и EthRPC API requests." %> <a href="https://docs.blockscout.com/for-users/api"> <%= gettext "Learn more" %></a>
+              </div>
+            </div>
+          <% else %>
+            <div style="min-width: 100%;">
+              <div class="tile tile-muted text-center" data-selector="empty-coin-balances-list">
+                <%= gettext "You can create 3 API keys per account." %> <a href="https://docs.blockscout.com/for-users/api"> <%= gettext "Learn more" %></a>
+              </div>
+            </div>
+          <% end %> -->
+          <div class="col-sm">
+            <div class="row o-flow-x">
+              <table class="table mb-3 table-abi">
+                <thead>
+                  <tr>
+                    <th scope="col"><%= gettext "Name" %></th>
+                    <th scope="col"><%= gettext "API key" %></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <%= if @api_keys != [] do %>
+                    <%= Enum.map(@api_keys, fn key -> render("row.html", api_key: key, conn: @conn) end) %>
+                  <% else %>
+                  <tr>
+                    <td colspan="4" class="no-data">You have yet to create an API-Key Token.</td>
+                  </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= static_path(@conn, "/js/delete-item-handler.js") %>"></script>
+</section>

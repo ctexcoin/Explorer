@@ -1,0 +1,30 @@
+<% #data_is_owner = %{"true" => "I want to add tags for my project", "false" => "I want to report an incorrect public tag"} %>
+<tr>
+  <td><%= @tag.email %></td>
+  <td>
+    <%= for tag <- String.split(@tag.tags, ";") do %>
+      <div class="bs-label black-hole mb-1"><%= tag %></div>
+    <% end %>
+  </td>
+  <td><%= Enum.join(@tag.addresses, "\n") %></td>  
+  <td>
+    <%= if @tag.status == 0 do %>
+      <div class="btn btn-line button-sm ml-3">Waiting approve</div>
+    <% else %>
+      <div class="button button-primary button-sm ml-3">Approved</div>
+    <% end %>
+  </td>
+  <td><%= Calendar.strftime(@tag.inserted_at, "%b %d, %Y") %></td>
+  <td> 
+    <%= link (render BlockScoutWeb.CommonComponentsView, "_svg_pen.html"), to: tags_manager_path(@conn, :edit, @tag.id) %>
+  </td>
+  <td> 
+    <%= if @tag.request_type == "delete" do %>
+      <form method="post" action="<%= tags_manager_path(@conn, :delete, @tag.id) %>">
+        <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token() %>">
+        <input type="hidden" name="_method" value="delete">
+      </form>
+      <a href="" data-delete-ads><%= (render BlockScoutWeb.CommonComponentsView, "_svg_trash.html") %></a>
+    <% end %>    
+  </td>
+</tr>

@@ -1,0 +1,100 @@
+<div class="account-banner-container">
+  <div class="container">
+    <div class="account-header d-flex flex-wrap justify-content-between align-items-center gap-4">
+      <div class="">
+        <a class="small back-home" href="<%= dashboard_path(@conn, :index) %>"><i class="fa fa-arrow-left"></i> Back Home</a>
+        <h1 class="h5 text-white my-1">Add Ads</h1>
+      </div>
+      <div class="d-flex gap-3">
+        <a class="btn btn-light" href="<%= session_path(@conn, :logout) %>">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="#181A1F"/>
+          </svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<section class="container box-top container-custom-abi">
+  <div class="row row-m-10">
+    <%= render BlockScoutWeb.Admin.CommonView, "_nav.html", conn: @conn, active_item: :public_tags_manager %>
+    <div class="col-md-9 col-p-10">
+      <div class="card">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="card-title"><%=if @method == :update, do: gettext("Edit Tags"), else: gettext "Add Tags" %></h3>
+            </div>
+          </div>
+        </div>
+        <div class="card-body card-body-form">
+          <div class="card-body-account">           
+            <% path = if @method == :update, do: tags_manager_path(@conn, @method, @public_tags_request.data.id), else: tags_manager_path(@conn, @method) %>
+              <%= form_for @public_tags_request, path, fn f -> %>
+                <div class="form-group">
+                  <%= label f, gettext("Full name: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= @public_tags_request.data.full_name %></span>
+                </div>
+
+                <div class="form-group">
+                  <%= label f, gettext("Email: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= @public_tags_request.data.email %></span>
+                </div>
+                <div class="form-group">
+                  <%= label f, gettext("Company: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= @public_tags_request.data.company %></span>
+                </div>
+                <div class="form-group">
+                  <%= label f, gettext("Tags: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;">
+                    <%= for tag <- String.split(@public_tags_request.data.tags, ";") do %>
+                      <div class="bs-label black-hole mb-1"><%= tag %></div>
+                    <% end %></span>
+                </div>
+                <div class="form-group">
+                  <%= label f, gettext("Address: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= Enum.join(@public_tags_request.data.addresses, "\n") %></span>
+                </div>
+                <div class="form-group">
+                  <%= label f, gettext("Description: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= @public_tags_request.data.additional_comment %></span>
+                </div>
+                <div class="form-group">
+                  <%= label f, gettext("Request type: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= @public_tags_request.data.request_type %></span>
+                </div>
+
+                <div class="form-group">
+                  <%= label f, gettext("Owner: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= 
+                    if @public_tags_request.data.is_owner == true, do: "I want to add tags for my project", else: "I want to report an incorrect public tag"
+                  %></span>
+                </div>
+
+                <div class="form-group">
+                  <%= label f, gettext("Date add: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= Calendar.strftime(@public_tags_request.data.inserted_at, "%b %d, %Y") %></span>
+                </div>
+
+                <div class="form-group">
+                  <%= label f, gettext("Date update: "), class: "control-label", style: "font-size: 14px" %>
+                  <span style="font-size: 14px; padding-left: 10px;"><%= Calendar.strftime(@public_tags_request.data.updated_at, "%b %d, %Y") %></span>
+                </div>
+
+                <div class="form-group float-right form-input">
+                  <a class="btn btn-line button-sm ml-3" href="<%= tags_manager_path(@conn, :index) %>"><%= gettext "Cancel"%></a>
+                  <%= if @public_tags_request.data.status == 0 do %>
+                    <input type="hidden" name="status" value="1">
+                    <input type="hidden" name="is_owner" value="<%= @public_tags_request.data.is_owner %>">
+                    <%= submit gettext("Approve"), class: "save-address-tag-button button button-primary button-sm ml-3" %>
+                  <% end %>
+                </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script defer data-cfasync="false" src="<%= Routes.static_path(@conn, "/js/editor.js") %>"></script>
+</section>

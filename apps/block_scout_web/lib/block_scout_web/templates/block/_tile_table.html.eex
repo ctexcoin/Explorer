@@ -1,0 +1,64 @@
+<% burned_fee = if !is_nil(@block.base_fee_per_gas), do: Wei.mult(@block.base_fee_per_gas, BlockBurnedFeeCounter.fetch(@block.hash)), else: nil %>
+<% priority_fee = if !is_nil(@block.base_fee_per_gas), do: BlockPriorityFeeCounter.fetch(@block.hash), else: nil %>
+<tr class="fade-up" data-selector="block-tile" data-block-number="<%= to_string(@block.number) %>" data-block-hash="<%= @block.hash %>">
+  <!-- block -->
+  <td class="text-blue">
+    <%= if @block_type == "Block" do %>
+      <%= link(
+            class: "tile-label",
+            to: block_path(BlockScoutWeb.Endpoint, :show, @block),
+            "data-selector": "block-number"
+          ) do %>
+          #<%= @block %>
+        <% end %>
+    <% else %>
+      <%= link(
+            class: "tile-label",
+            to: block_path(BlockScoutWeb.Endpoint, :show, @block.hash),
+            "data-selector": "block-number"
+          ) do %>
+          #<%= @block %>
+        <% end %>
+    <% end %>
+  </td>
+  <!-- Age -->
+  <td><span data-from-now="<%= @block.timestamp %>"></span></td>
+  <!-- Txn -->
+  <!-- <td class="text-blue"></td> -->
+  <!-- Fee Recipient -->
+  <td class="text-blue">
+    <div class="ellipsis">
+      <%= render BlockScoutWeb.AddressView,
+        "_link.html",
+        address: @block.miner,
+        contract: false,
+        use_custom_tooltip: false %>
+      <button type="button" class="btn-copy" data-toggle="tooltip" data-placement="top" data-original-title="Copy address">
+        <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.25 3.31066V9.25H5.75V0.75H10.6893L13.25 3.31066Z" stroke="#CECECE" stroke-width="1.5"></path>
+          <path d="M4 4H1V14H10V11" stroke="#CECECE" stroke-width="1.5"></path>
+          <path d="M10 4V0L14 4H10Z" fill="#CECECE"></path>
+        </svg>
+      </button>
+    </div>
+  </td>
+  <!-- Gas Used -->
+  <td>
+    <%= formatted_gas(@block.gas_used) %>
+    <% gas = if Decimal.compare(@block.gas_limit, 0) == :gt, do: Decimal.to_integer(@block.gas_used) / Decimal.to_integer(@block.gas_limit), else: 0  %>
+    (<%= formatted_gas(gas, format: "#.#%") %>)
+  </td>
+  <!-- Gas Limit -->
+  <td><%= formatted_gas(@block.gas_limit) %></td>
+  <%= if !is_nil(@block.base_fee_per_gas) do %>
+    <!-- Base Fee -->
+    <td><%= format_wei_value(%Wei{value: priority_fee}, :ether) %></td>
+  <% end %>
+  <!-- Reward -->
+  <td><%= combined_rewards_value(@block) %></td>
+
+  <%= if !is_nil(@block.base_fee_per_gas) do %>
+    <!-- Burnt Fees -->
+    <td><%= format_wei_value(burned_fee, :ether) %></td>
+  <% end %>
+</tr>

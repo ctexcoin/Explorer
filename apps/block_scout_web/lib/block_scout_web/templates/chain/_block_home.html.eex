@@ -1,0 +1,46 @@
+<div class="fade-down-blocks-chain fade-in" data-selector="chain-block" data-block-number="<%= @block.number %>">
+  <div class="blocks-chain-body-content">
+    <div class="">
+      <div class="fade-blocks-chain-child">
+        <div class="tile-transaction-block col-md-1 mobile-hide flex-row flex-md-column">
+          <span class="tile-block-label">
+            <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 1L1 5.5L10 10L19 5.5L10 1Z" stroke="#97999F" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M1 5.5V16.75L10 21.25L19 16.75V5.5" stroke="#97999F" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M10 10V21.25" stroke="#97999F" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <div class="col-md-3">
+          <span class="mobile-show">Block </span>
+            <%= link(
+              @block,
+              class: "text-blue",
+              to: block_path(BlockScoutWeb.Endpoint, :show, @block),
+              "data-selector": "block-number"
+            ) %>
+            <span class="text-nowrap text-time" data-from-now="<%= @block.timestamp %>"> </span>
+        </div>
+        <div class="col-md-5">
+          <%= if System.get_env("HIDE_BLOCK_MINER") !== "true" do %>
+            <div class="text-truncate">
+              <%= gettext "Validated by" %>
+              <%= render BlockScoutWeb.AddressView,
+                "_link.html",
+                address: @block.miner,
+                contract: false,
+                use_custom_tooltip: false,
+                custom_classes_tooltip: ["miner-address-tooltip"] %>
+            </div>
+            <span ><%= gettext("%{count} txns", count: Enum.count(@block.transactions)) %></span>
+          <% end %>
+        </div>
+        <div class="col-md-3 box-rewards-value">
+            <div class="text-truncate text-box-right">
+              <%= BlockScoutWeb.BlockView.combined_rewards_value(@block) %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

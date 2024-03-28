@@ -1,0 +1,31 @@
+<% types = %{"home" => "Home", "address" => "Address", "tx" => "Transaction", "all" => "All"} %>
+<tr>
+  <td><%= @ads.title %></td>
+  <td>
+    <%= if @ads.link do %>
+    <img src="<%= @ads.link %>" alt="<%= @ads.title %>" width="100px">
+    <% end %>
+  </td>
+  <td><a href="<%= @ads.url_ads %>" target="_blank"><%= @ads.url_ads %></a></td>
+  <td><%= raw(@ads.content_ads) %></td>
+  <%= if types[@ads.type] do %>
+  <td><%= types[@ads.type] %></td>
+  <% else %>
+  <td></td>
+  <% end %>
+  <%= if (@ads.status == 1) do %>
+  <td>Enabled</td>
+  <% else %>
+  <td>Disabled</td>
+  <% end %>
+  <td>
+    <%= link (render BlockScoutWeb.CommonComponentsView, "_svg_pen.html"), to: ads_path(@conn, :edit, @ads.id) %>
+  </td>
+  <td>
+    <form method="post" action="<%= ads_path(@conn, :delete, @ads.id) %>">
+      <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token() %>">
+      <input type="hidden" name="_method" value="delete">
+    </form>
+    <a href="" data-delete-ads><%= (render BlockScoutWeb.CommonComponentsView, "_svg_trash.html") %></a>
+  </td>
+</tr>

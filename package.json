@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jquery-circle-progress": "^1.2.2",
+    "solc": "^0.8.19"
+  }
+}
