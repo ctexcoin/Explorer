@@ -1,6 +1,6 @@
-defmodule Explorer.ExchangeRates.Source.CoinVindax do
+defmodule Explorer.ExchangeRates.Source.CoinCtex do
   @moduledoc """
-  Adapter for fetching exchange rates from https://eclat.live/api/
+  Adapter for fetching exchange rates from https://ctexscan.com/api/
   """
 
   alias Explorer.ExchangeRates.{Source, Token}
@@ -47,7 +47,7 @@ defmodule Explorer.ExchangeRates.Source.CoinVindax do
   end
 
   defp base_url do
-    config(:base_url) || "https://eclat.live/api"
+    config(:base_url) || "https://ctexscan.com/api"
   end
 
   defp api_quotes_latest_url do
