@@ -265,7 +265,7 @@ exchange_rates_source =
   cond do
     System.get_env("EXCHANGE_RATES_SOURCE") == "coin_gecko" -> Explorer.ExchangeRates.Source.CoinGecko
     System.get_env("EXCHANGE_RATES_SOURCE") == "coin_market_cap" -> Explorer.ExchangeRates.Source.CoinMarketCap
-    System.get_env("EXCHANGE_RATES_SOURCE") == "coin_vindax" -> Explorer.ExchangeRates.Source.CoinVindax
+    System.get_env("EXCHANGE_RATES_SOURCE") == "coin_ctex" -> Explorer.ExchangeRates.Source.CoinCtex
     true -> Explorer.ExchangeRates.Source.CoinGecko
   end
 
